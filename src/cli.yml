@@ -1,0 +1,18 @@
+name: racrc
+version: "?"
+about: Compile RACR descriptions into code.
+args:
+    - input:
+        required: true
+        short: i
+        long: input
+        value_name: FILE
+        help: The input file (.racr)
+        takes_value: true
+    - output:
+        required: true
+        short: o
+        long: output
+        value_name: FILE
+        help: The output file
+        takes_value: true

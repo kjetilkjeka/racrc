@@ -1,0 +1,8 @@
+device ArmExample {
+    timer0: timer0::Timer0 @ 0x40010000,
+    timer1: timer1::Timer1 @ 0x40010100,
+    timer2: timer2::Timer2 @ 0x40010200,
+}
+mod timer0;
+mod timer1;
+mod timer2;

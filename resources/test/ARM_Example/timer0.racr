@@ -1,0 +1,238 @@
+#[doc = "32 Timer / Counter, counting up or down from different sources"]
+peripheral Timer0 {
+    cr: Cr @ 0x0,
+    sr: Sr @ 0x4,
+    int: Int @ 0x10,
+    count: Count @ 0x20,
+    match: Match @ 0x24,
+    prescale_rd: PrescaleRd @ 0x28,
+    prescale_wr: PrescaleWr @ 0x28,
+    reload: [Reload; 4] @ 0x50,
+}
+#[doc = "Control Register"]
+ReadWrite register[32] Cr = 0x0 {
+    #[doc = "Enable"]
+    ReadWrite en[0] {
+        #[doc = "Timer is disabled and does not operate"]
+        Disable = 0x0,
+        #[doc = "Timer is enabled and can operate"]
+        Enable = 0x1,
+    },
+    #[doc = "Reset Timer"]
+    WriteOnly rst[1] {
+        #[doc = "Write as ZERO if necessary"]
+        NoAction = 0x0,
+        #[doc = "Reset the Timer"]
+        ResetTimer = 0x1,
+    },
+    #[doc = "Counting direction"]
+    ReadWrite cnt[2..4] {
+        #[doc = "Timer Counts UO and wraps, if no STOP condition is set"]
+        CountUp = 0x0,
+        #[doc = "Timer Counts DOWN and wraps, if no STOP condition is set"]
+        CountDown = 0x1,
+        #[doc = "Timer Counts up to MAX, then DOWN to ZERO, if no STOP condition is set"]
+        Toggle = 0x2,
+    },
+    #[doc = "Operation Mode"]
+    ReadWrite mode[4..7] {
+        #[doc = "Timer runs continously"]
+        Continous = 0x0,
+        #[doc = "Timer counts to 0x00 or 0xFFFFFFFF (depending on CNT) and stops"]
+        SingleZeroMax = 0x1,
+        #[doc = "Timer counts to the Value of MATCH Register and stops"]
+        SingleMatch = 0x2,
+        #[doc = "Timer counts to 0x00 or 0xFFFFFFFF (depending on CNT), loads the RELOAD Value and continues"]
+        ReloadZeroMax = 0x3,
+        #[doc = "Timer counts to the Value of MATCH Register, loads the RELOAD Value and continues"]
+        ReloadMatch = 0x4,
+    },
+    #[doc = "Use Prescaler"]
+    ReadWrite psc[7] {
+        #[doc = "Prescaler is not used"]
+        Disabled = 0x0,
+        #[doc = "Prescaler is used as divider"]
+        Enabled = 0x1,
+    },
+    #[doc = "Timer / Counter Source Divider"]
+    ReadWrite cntsrc[8..12] {
+        #[doc = "Capture Source is used directly"]
+        CapSrc = 0x0,
+        #[doc = "Capture Source is divided by 2"]
+        CapSrcDiv2 = 0x1,
+        #[doc = "Capture Source is divided by 4"]
+        CapSrcDiv4 = 0x2,
+        #[doc = "Capture Source is divided by 8"]
+        CapSrcDiv8 = 0x3,
+        #[doc = "Capture Source is divided by 16"]
+        CapSrcDiv16 = 0x4,
+        #[doc = "Capture Source is divided by 32"]
+        CapSrcDiv32 = 0x5,
+        #[doc = "Capture Source is divided by 64"]
+        CapSrcDiv64 = 0x6,
+        #[doc = "Capture Source is divided by 128"]
+        CapSrcDiv128 = 0x7,
+        #[doc = "Capture Source is divided by 256"]
+        CapSrcDiv256 = 0x8,
+    },
+    #[doc = "Timer / Counter Capture Source"]
+    ReadWrite capsrc[12..16] {
+        #[doc = "Core Clock"]
+        Cclk = 0x0,
+        #[doc = "GPIO A, PIN 0"]
+        Gpioa0 = 0x1,
+        #[doc = "GPIO A, PIN 1"]
+        Gpioa1 = 0x2,
+        #[doc = "GPIO A, PIN 2"]
+        Gpioa2 = 0x3,
+        #[doc = "GPIO A, PIN 3"]
+        Gpioa3 = 0x4,
+        #[doc = "GPIO A, PIN 4"]
+        Gpioa4 = 0x5,
+        #[doc = "GPIO A, PIN 5"]
+        Gpioa5 = 0x6,
+        #[doc = "GPIO A, PIN 6"]
+        Gpioa6 = 0x7,
+        #[doc = "GPIO A, PIN 7"]
+        Gpioa7 = 0x8,
+        #[doc = "GPIO B, PIN 0"]
+        Gpiob0 = 0x9,
+        #[doc = "GPIO B, PIN 1"]
+        Gpiob1 = 0xa,
+        #[doc = "GPIO B, PIN 2"]
+        Gpiob2 = 0xb,
+        #[doc = "GPIO B, PIN 3"]
+        Gpiob3 = 0xc,
+        #[doc = "GPIO C, PIN 0"]
+        Gpioc0 = 0xd,
+        #[doc = "GPIO C, PIN 1"]
+        Gpioc5 = 0xe,
+        #[doc = "GPIO C, PIN 2"]
+        Gpioc6 = 0xf,
+    },
+    #[doc = "Capture Edge, select which Edge should result in a counter increment or decrement"]
+    ReadWrite capedge[16..18] {
+        #[doc = "Only rising edges result in a counter increment or decrement"]
+        Rising = 0x0,
+        #[doc = "Only falling edges  result in a counter increment or decrement"]
+        Falling = 0x1,
+        #[doc = "Rising and falling edges result in a counter increment or decrement"]
+        Both = 0x2,
+    },
+    #[doc = "Triggers an other Peripheral"]
+    ReadWrite trgext[20..22] {
+        #[doc = "No Trigger is emitted"]
+        None = 0x0,
+        #[doc = "DMA Controller 1 is triggered, dependant on MODE"]
+        Dma1 = 0x1,
+        #[doc = "DMA Controller 2 is triggered, dependant on MODE"]
+        Dma2 = 0x2,
+        #[doc = "UART is triggered, dependant on MODE"]
+        Uart = 0x3,
+    },
+    #[doc = "Select RELOAD Register n to reload Timer on condition"]
+    ReadWrite reload[24..26] {
+        #[doc = "Selects Reload Register number 0"]
+        Reload0 = 0x0,
+        #[doc = "Selects Reload Register number 1"]
+        Reload1 = 0x1,
+        #[doc = "Selects Reload Register number 2"]
+        Reload2 = 0x2,
+        #[doc = "Selects Reload Register number 3"]
+        Reload3 = 0x3,
+    },
+    #[doc = "Selects, if Reload Register number is incremented, decremented or not modified"]
+    ReadWrite idr[26..28] {
+        #[doc = "Reload Register number does not change automatically"]
+        Keep = 0x0,
+        #[doc = "Reload Register number is incremented on each match"]
+        Increment = 0x1,
+        #[doc = "Reload Register number is decremented on each match"]
+        Decrement = 0x2,
+    },
+    #[doc = "Starts and Stops the Timer / Counter"]
+    ReadWrite s[31] {
+        #[doc = "Timer / Counter is stopped"]
+        Stop = 0x0,
+        #[doc = "Timer / Counter is started"]
+        Start = 0x1,
+    },
+}
+#[doc = "Status Register"]
+ReadWrite register[16] Sr = 0x0 {
+    #[doc = "Shows if Timer is running or not"]
+    ReadOnly run[0] {
+        #[doc = "Timer is not running"]
+        Stopped = 0x0,
+        #[doc = "Timer is running"]
+        Running = 0x1,
+    },
+    #[doc = "Shows if the MATCH was hit"]
+    ReadWrite match[8] {
+        #[doc = "The MATCH condition was not hit"]
+        NoMatch = 0x0,
+        #[doc = "The MATCH condition was hit"]
+        MatchHit = 0x1,
+    },
+    #[doc = "Shows if an underflow occured. This flag is sticky"]
+    ReadWrite un[9] {
+        #[doc = "No underflow occured since last clear"]
+        NoUnderflow = 0x0,
+        #[doc = "A minimum of one underflow occured since last clear"]
+        Underflow = 0x1,
+    },
+    #[doc = "Shows if an overflow occured. This flag is sticky"]
+    ReadWrite ov[10] {
+        #[doc = "No overflow occured since last clear"]
+        NoOverflow = 0x0,
+        #[doc = "A minimum of one overflow occured since last clear"]
+        OverflowOccured = 0x1,
+    },
+    #[doc = "Shows if Timer is in RESET state"]
+    ReadOnly rst[12] {
+        #[doc = "Timer is not in RESET state and can operate"]
+        Ready = 0x0,
+        #[doc = "Timer is in RESET state and can not operate"]
+        InReset = 0x1,
+    },
+    #[doc = "Shows the currently active RELOAD Register"]
+    ReadOnly reload[14..16] {
+        #[doc = "Reload Register number 0 is active"]
+        Reload0 = 0x0,
+        #[doc = "Reload Register number 1 is active"]
+        Reload1 = 0x1,
+        #[doc = "Reload Register number 2 is active"]
+        Reload2 = 0x2,
+        #[doc = "Reload Register number 3 is active"]
+        Reload3 = 0x3,
+    },
+}
+#[doc = "Interrupt Register"]
+ReadWrite register[16] Int = 0x0 {
+    #[doc = "Interrupt Enable"]
+    ReadWrite en[0] {
+        #[doc = "Timer does not generate Interrupts"]
+        Disabled = 0x0,
+        #[doc = "Timer triggers the TIMERn Interrupt"]
+        Enable = 0x1,
+    },
+    #[doc = "Interrupt Mode, selects on which condition the Timer should generate an Interrupt"]
+    ReadWrite mode[4..7] {
+        #[doc = "Timer generates an Interrupt when the MATCH condition is hit"]
+        Match = 0x0,
+        #[doc = "Timer generates an Interrupt when it underflows"]
+        Underflow = 0x1,
+        #[doc = "Timer generates an Interrupt when it overflows"]
+        Overflow = 0x2,
+    },
+}
+#[doc = "The Counter Register reflects the actual Value of the Timer/Counter"]
+ReadWrite register[32] Count = 0x0 {}
+#[doc = "The Match Register stores the compare Value for the MATCH condition"]
+ReadWrite register[32] Match = 0x0 {}
+#[doc = "The Prescale Register stores the Value for the prescaler. The cont event gets divided by this value"]
+ReadOnly register[32] PrescaleRd = 0x0 {}
+#[doc = "The Prescale Register stores the Value for the prescaler. The cont event gets divided by this value"]
+WriteOnly register[32] PrescaleWr = 0x0 {}
+#[doc = "The Reload Register stores the Value the COUNT Register gets reloaded on a when a condition was met."]
+ReadWrite register[32] Reload = 0x0 {}
