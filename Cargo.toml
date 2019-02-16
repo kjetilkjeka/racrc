@@ -9,5 +9,5 @@ clap = {version = "2.32", features = ["yaml"]}
 
 inflections = "1.1"
 
-racr = {git = "https://github.com/racr-rust/racr-rust.git", rev = "1f8df4bb8685e874bdfbd661c18badd20804b3e7"}
-racr-parser = {git = "https://github.com/racr-rust/racr-parser.git", rev = "4c4ee0614c47dbacadcc7c8546595c52e6881c63"}
+racr = {git = "https://github.com/racr-rust/racr-rust.git", rev = "d75a7f130a2c64e0971d4a4ccdcb236d75a638a8"}
+racr-parser = {git = "https://github.com/racr-rust/racr-parser.git", rev = "02cd49a2d4f74dc68829a7b36df04768fc372a45"}
