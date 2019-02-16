@@ -7,6 +7,12 @@ use std::path::Path;
 use std::io::{Read, Write};
 use std::fs::File;
 
+mod error;
+
+use error::{
+    Error,
+    ErrorKind,
+};
 fn main() {
     let cli_yaml = load_yaml!("cli.yml");
     let cli_matches = App::from_yaml(cli_yaml).get_matches();
